@@ -1,11 +1,17 @@
-export function buildUpiLink(vpa: string, amount?: string): string {
-  const sanitizedVpa = encodeURIComponent(vpa.trim())
-  const base = `upi://pay?pa=${sanitizedVpa}&cu=INR`
+function generateTxnRef(): string {
+  return `FS${Date.now()}`
+}
+
+export function buildUpiLink(vpa: string, amount?: string, payeeName?: string): string {
+  const pa = encodeURIComponent(vpa.trim())
+  const pn = encodeURIComponent((payeeName?.trim() || 'FluxScan').replace(/[^\w\s]/g, ''))
+  const tr = encodeURIComponent(generateTxnRef())
+
+  let link = `upi://pay?pa=${pa}&pn=${pn}&mc=0000&tr=${tr}&cu=INR`
 
   if (amount && amount.trim() !== '') {
-    const sanitizedAmount = encodeURIComponent(amount.trim())
-    return `${base}&am=${sanitizedAmount}`
+    link += `&am=${encodeURIComponent(amount.trim())}`
   }
 
-  return base
+  return link
 }

@@ -10,6 +10,7 @@ const QRCard = lazy(() => import('./components/QRCard'))
 
 export default function App() {
   const [upiId, setUpiId] = useState('')
+  const [payeeName, setPayeeName] = useState('')
   const [amount, setAmount] = useState('')
   const [upiLink, setUpiLink] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -31,14 +32,15 @@ export default function App() {
     if (!canGenerate) return
     setIsGenerating(true)
     setTimeout(() => {
-      const link = buildUpiLink(upiId, amount)
+      const link = buildUpiLink(upiId, amount, payeeName)
       setUpiLink(link)
       setIsGenerating(false)
     }, 400)
-  }, [canGenerate, upiId, amount])
+  }, [canGenerate, upiId, amount, payeeName])
 
   const handleReset = useCallback(() => {
     setUpiId('')
+    setPayeeName('')
     setAmount('')
     setUpiLink(null)
     setTouched(false)
@@ -77,6 +79,16 @@ export default function App() {
                     if (!touched) setTouched(true)
                   }}
                   error={upiError}
+                />
+
+                <InputField
+                  id="payee-name"
+                  label="Payee Name — optional"
+                  placeholder="Name or business"
+                  type="text"
+                  autoComplete="off"
+                  value={payeeName}
+                  onChange={(e) => setPayeeName(e.target.value)}
                 />
 
                 <InputField
