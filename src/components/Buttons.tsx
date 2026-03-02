@@ -22,7 +22,7 @@ export default function Button({
     secondary:
       'bg-surface-hover text-text-primary border border-border-subtle hover:bg-surface-hover/80 active:scale-[0.98]',
     ghost:
-      'text-text-secondary/60 hover:text-text-primary hover:bg-hover-bg active:scale-[0.98]',
+      'text-text-secondary/80 hover:text-text-primary hover:bg-hover-bg active:scale-[0.98]',
   }
 
   return (

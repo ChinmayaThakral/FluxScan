@@ -48,7 +48,7 @@ export default function InstallBanner() {
           onClick={() => setDismissed(true)}
           className="p-1 rounded-md hover:bg-hover-bg transition-colors cursor-pointer"
         >
-          <X className="w-3.5 h-3.5 text-text-secondary/50" />
+          <X className="w-3.5 h-3.5 text-text-secondary/70" />
         </button>
       </div>
     </div>

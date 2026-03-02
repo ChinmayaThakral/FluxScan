@@ -87,20 +87,20 @@ export default function PaymentLog({ entries, onUpdate, onImport }: PaymentLogPr
           onClick={() => setExpanded(!expanded)}
           className="flex items-center justify-between w-full py-2 cursor-pointer"
         >
-          <p className="text-xs uppercase tracking-widest text-text-secondary/30 font-medium flex items-center gap-2">
+          <p className="text-xs uppercase tracking-widest text-text-secondary/60 font-medium flex items-center gap-2">
             History
-            <span className="text-text-secondary/20">({entries.length})</span>
+            <span className="text-text-secondary/40">({entries.length})</span>
           </p>
           <div className="flex items-center gap-3">
             <span
               onClick={(e) => { e.stopPropagation(); clearPaymentLog(); onUpdate() }}
-              className="text-xs text-text-secondary/20 hover:text-danger/70 transition-colors"
+              className="text-xs text-text-secondary/40 hover:text-danger transition-colors"
             >
               Clear
             </span>
             {expanded
-              ? <ChevronUp className="w-4 h-4 text-text-secondary/20" />
-              : <ChevronDown className="w-4 h-4 text-text-secondary/20" />
+              ? <ChevronUp className="w-4 h-4 text-text-secondary/50" />
+              : <ChevronDown className="w-4 h-4 text-text-secondary/50" />
             }
           </div>
         </button>
@@ -119,8 +119,8 @@ export default function PaymentLog({ entries, onUpdate, onImport }: PaymentLogPr
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-text-primary/80 truncate">{entry.name || entry.vpa}</p>
                   <div className="flex items-center gap-2 mt-0.5">
-                    {entry.amount && <span className="text-xs text-text-secondary/50">₹{entry.amount}</span>}
-                    <span className="text-[10px] text-text-secondary/25">{formatTime(entry.timestamp)}</span>
+                    {entry.amount && <span className="text-xs text-text-secondary/70">₹{entry.amount}</span>}
+                    <span className="text-[10px] text-text-secondary/50">{formatTime(entry.timestamp)}</span>
                   </div>
                 </div>
 
@@ -128,11 +128,11 @@ export default function PaymentLog({ entries, onUpdate, onImport }: PaymentLogPr
                   <button onClick={() => handleCopy(entry)} className="p-2 rounded-lg hover:bg-hover-bg transition-colors cursor-pointer">
                     {copiedId === entry.id
                       ? <Check className="w-3.5 h-3.5 text-success/70" />
-                      : <Copy className="w-3.5 h-3.5 text-text-secondary/20" />
+                      : <Copy className="w-3.5 h-3.5 text-text-secondary/40" />
                     }
                   </button>
                   <button onClick={() => handleDelete(entry.id)} className="p-2 rounded-lg hover:bg-hover-bg transition-colors cursor-pointer group/del">
-                    <Trash2 className="w-3.5 h-3.5 text-text-secondary/15 group-hover/del:text-danger/60" />
+                    <Trash2 className="w-3.5 h-3.5 text-text-secondary/30 group-hover/del:text-danger" />
                   </button>
                 </div>
               </div>
@@ -145,11 +145,11 @@ export default function PaymentLog({ entries, onUpdate, onImport }: PaymentLogPr
             <button
               onClick={handleExport}
               disabled={entries.length === 0}
-              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs text-text-secondary/25 hover:text-text-secondary/50 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+              className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs text-text-secondary/50 hover:text-text-secondary transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <Download className="w-3.5 h-3.5" /> Export
             </button>
-            <label className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs text-text-secondary/25 hover:text-text-secondary/50 transition-colors cursor-pointer">
+            <label className="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-xs text-text-secondary/50 hover:text-text-secondary transition-colors cursor-pointer">
               <Upload className="w-3.5 h-3.5" /> Import
               <input ref={fileInputRef} type="file" accept=".json" onChange={handleImportFile} className="sr-only" />
             </label>

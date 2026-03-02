@@ -9,7 +9,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   function InputField({ label, error, id, className = '', ...props }, ref) {
     return (
       <div className="flex flex-col gap-2.5">
-        <label htmlFor={id} className="text-xs uppercase tracking-widest text-text-secondary/60 font-medium pl-1">
+        <label htmlFor={id} className="text-xs uppercase tracking-widest text-text-secondary/80 font-medium pl-1">
           {label}
         </label>
         <input
@@ -20,7 +20,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             bg-input-bg text-text-primary text-lg
             border border-input-border
             transition-all duration-200 ease-out
-            placeholder:text-text-secondary/25
+            placeholder:text-text-secondary/40
             focus:outline-none focus:border-input-border-focus focus:ring-4 focus:ring-input-ring
             hover:border-input-border-hover
             ${error ? '!border-danger/50 !ring-danger/10' : ''}

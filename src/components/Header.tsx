@@ -8,15 +8,15 @@ interface HeaderProps {
 
 export default function Header({ theme, onToggleTheme }: HeaderProps) {
   return (
-    <header className="w-full flex items-start justify-between pt-14 pb-10">
+      <header className="w-full flex items-start justify-between pt-14 pb-24">
       <div>
         <h1 className="text-4xl font-semibold tracking-tight text-text-primary mb-2">
           Flux<span className="text-accent">Scan</span>
         </h1>
-        <p className="text-base text-text-secondary/70">
+        <p className="text-base text-text-secondary">
           generate. scan. done.
         </p>
-        <p className="text-xs text-text-secondary/30 mt-1.5 tracking-wide">
+        <p className="text-xs text-text-secondary/60 mt-1.5 tracking-wide">
           Built by merchants. For merchants.
         </p>
       </div>
@@ -26,8 +26,8 @@ export default function Header({ theme, onToggleTheme }: HeaderProps) {
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
       >
         {theme === 'dark'
-          ? <Sun className="w-[18px] h-[18px] text-text-secondary/50" />
-          : <Moon className="w-[18px] h-[18px] text-text-secondary/50" />
+          ? <Sun className="w-[18px] h-[18px] text-text-secondary/70" />
+          : <Moon className="w-[18px] h-[18px] text-text-secondary/70" />
         }
       </button>
     </header>

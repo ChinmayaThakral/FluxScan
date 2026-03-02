@@ -278,13 +278,13 @@ export default function App() {
 
         {/* Footer */}
         <footer className="text-center py-8">
-          <p className="text-xs text-text-secondary/25">
+          <p className="text-xs text-text-secondary/50">
             Offline Ready · Payments Generated: <span className="text-accent/60">{totalGenerated}</span> · v2.0
           </p>
           <div className="flex items-center justify-center gap-3 mt-4">
             <button
               onClick={() => setShowSupportModal(true)}
-              className="px-4 py-2 rounded-lg text-sm text-text-secondary/50 hover:text-accent hover:bg-hover-bg transition-all cursor-pointer inline-flex items-center gap-2"
+              className="px-4 py-2 rounded-lg text-sm text-text-secondary/70 hover:text-accent hover:bg-hover-bg transition-all cursor-pointer inline-flex items-center gap-2"
             >
               <Heart className="w-4 h-4" /> Support
             </button>
@@ -292,7 +292,7 @@ export default function App() {
               href={REFERRAL_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-4 py-2 rounded-lg text-sm text-text-secondary/50 hover:text-accent hover:bg-hover-bg transition-all inline-flex items-center gap-2"
+              className="px-4 py-2 rounded-lg text-sm text-text-secondary/70 hover:text-accent hover:bg-hover-bg transition-all inline-flex items-center gap-2"
             >
               <ExternalLink className="w-4 h-4" /> P2P Merchant
             </a>

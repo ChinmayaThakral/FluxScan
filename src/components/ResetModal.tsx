@@ -15,7 +15,7 @@ export default function ResetModal({ open, onClose, onChoice }: ResetModalProps)
       <p className="text-base font-semibold text-text-primary mb-1">
         Payment status?
       </p>
-      <p className="text-xs text-text-secondary/50 mb-6">
+      <p className="text-xs text-text-secondary/70 mb-6">
         Helps track your history.
       </p>
 
@@ -36,7 +36,7 @@ export default function ResetModal({ open, onClose, onChoice }: ResetModalProps)
         </button>
         <button
           onClick={() => onChoice('skip')}
-          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm text-text-secondary/35 hover:text-text-secondary/60 hover:bg-hover-bg transition-colors cursor-pointer"
+          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm text-text-secondary/60 hover:text-text-secondary hover:bg-hover-bg transition-colors cursor-pointer"
         >
           <RotateCcw className="w-4 h-4" />
           Just reset

@@ -41,7 +41,7 @@ export default function SupportModal({ open, onClose }: SupportModalProps) {
   return (
     <Modal open={open} onClose={onClose}>
       <p className="text-base font-semibold text-text-primary mb-1">Support FluxScan</p>
-      <p className="text-xs text-text-secondary/50 mb-5">
+      <p className="text-xs text-text-secondary/70 mb-5">
         No obligation. FluxScan remains free.
       </p>
 
@@ -51,8 +51,8 @@ export default function SupportModal({ open, onClose }: SupportModalProps) {
         </div>
 
         <div className="w-full space-y-1">
-          <p className="text-[10px] uppercase tracking-widest text-text-secondary/25 font-medium">{NETWORK}</p>
-          <p className="text-[11px] text-text-secondary/40 font-mono break-all select-all leading-relaxed">{EVM_ADDRESS}</p>
+          <p className="text-[10px] uppercase tracking-widest text-text-secondary/50 font-medium">{NETWORK}</p>
+          <p className="text-[11px] text-text-secondary/60 font-mono break-all select-all leading-relaxed">{EVM_ADDRESS}</p>
         </div>
 
         <button

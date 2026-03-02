@@ -11,8 +11,8 @@
   --color-input-ring: rgba(124, 110, 240, 0.08);
   --color-accent: #7C6EF0;
   --color-accent-hover: #8D80F8;
-  --color-text-primary: #E8E8EC;
-  --color-text-secondary: #71717A;
+  --color-text-primary: #F4F4F8;
+  --color-text-secondary: #9CA3AF;
   --color-border-subtle: rgba(255, 255, 255, 0.06);
   --color-hover-bg: rgba(255, 255, 255, 0.04);
   --color-danger: #EF4444;
@@ -50,8 +50,8 @@ body.light {
   --color-input-border-hover: rgba(0, 0, 0, 0.18);
   --color-input-border-focus: rgba(124, 110, 240, 0.45);
   --color-input-ring: rgba(124, 110, 240, 0.10);
-  --color-text-primary: #111118;
-  --color-text-secondary: #6B7280;
+  --color-text-primary: #0F0F15;
+  --color-text-secondary: #4B5563;
   --color-border-subtle: rgba(0, 0, 0, 0.06);
   --color-hover-bg: rgba(0, 0, 0, 0.03);
   background: radial-gradient(1000px 600px at 50% -10%, #FAFAFF 0%, var(--color-bg) 60%), var(--color-bg);

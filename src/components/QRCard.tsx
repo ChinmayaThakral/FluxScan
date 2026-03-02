@@ -112,7 +112,7 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
         {/* Hero card */}
         <div className="w-full bg-surface border border-border-subtle rounded-2xl p-8 flex flex-col items-center gap-7">
 
-          <p className="text-xs uppercase tracking-widest text-text-secondary/40 font-medium">
+          <p className="text-xs uppercase tracking-widest text-text-secondary/70 font-medium">
             Scan with any UPI app
           </p>
 
@@ -152,17 +152,17 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
           <label className="flex items-center gap-2 cursor-pointer self-start">
             <input type="checkbox" checked={branded} onChange={(e) => setBranded(e.target.checked)} className="sr-only peer" />
             <div className="w-8 h-[18px] rounded-full bg-surface-hover peer-checked:bg-accent/25 relative transition-colors">
-              <div className={`absolute top-[3px] w-3 h-3 rounded-full transition-all ${branded ? 'left-[14px] bg-accent' : 'left-[3px] bg-text-secondary/30'}`} />
+              <div className={`absolute top-[3px] w-3 h-3 rounded-full transition-all ${branded ? 'left-[14px] bg-accent' : 'left-[3px] bg-text-secondary/50'}`} />
             </div>
-            <span className="text-xs text-text-secondary/30">Branding</span>
+            <span className="text-xs text-text-secondary/60">Branding</span>
           </label>
         </div>
 
         <details className="w-full mt-5">
-          <summary className="text-xs text-text-secondary/25 cursor-pointer hover:text-text-secondary/40 transition-colors pl-1">
+          <summary className="text-xs text-text-secondary/50 cursor-pointer hover:text-text-secondary/70 transition-colors pl-1">
             Show generated link
           </summary>
-          <p className="text-xs text-text-secondary/30 break-all font-mono leading-relaxed select-all mt-2 pl-1">{upiLink}</p>
+          <p className="text-xs text-text-secondary/50 break-all font-mono leading-relaxed select-all mt-2 pl-1">{upiLink}</p>
         </details>
 
         <div className="w-full mt-8">
@@ -181,7 +181,7 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
             <X className="w-5 h-5 text-text-primary" />
           </button>
           <canvas ref={fullscreenCanvasRef} className="block rounded-xl" />
-          <p className="mt-5 text-sm text-text-secondary/40">Tap to close</p>
+          <p className="mt-5 text-sm text-text-secondary/60">Tap to close</p>
         </div>
       )}
     </>
