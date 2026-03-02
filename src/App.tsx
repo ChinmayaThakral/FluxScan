@@ -3,7 +3,7 @@ import Header from './components/Header'
 import InputField from './components/InputField'
 import Button from './components/Buttons'
 import { validateUpi, validateAmount } from './utils/validateUpi'
-import { buildEmvPayload } from './utils/buildEmv'
+import { buildUpiLink } from './utils/buildUpi'
 import { Zap } from 'lucide-react'
 
 const QRCard = lazy(() => import('./components/QRCard'))
@@ -12,7 +12,8 @@ export default function App() {
   const [upiId, setUpiId] = useState('')
   const [payeeName, setPayeeName] = useState('')
   const [amount, setAmount] = useState('')
-  const [emvPayload, setEmvPayload] = useState<string | null>(null)
+  const [note, setNote] = useState('')
+  const [upiLink, setUpiLink] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [touched, setTouched] = useState(false)
 
@@ -32,21 +33,23 @@ export default function App() {
     if (!canGenerate) return
     setIsGenerating(true)
     setTimeout(() => {
-      const payload = buildEmvPayload({
+      const link = buildUpiLink({
         vpa: upiId,
-        merchantName: payeeName || undefined,
+        payeeName: payeeName || undefined,
         amount: amount || undefined,
+        note: note || undefined,
       })
-      setEmvPayload(payload)
+      setUpiLink(link)
       setIsGenerating(false)
     }, 400)
-  }, [canGenerate, upiId, amount, payeeName])
+  }, [canGenerate, upiId, payeeName, amount, note])
 
   const handleReset = useCallback(() => {
     setUpiId('')
     setPayeeName('')
     setAmount('')
-    setEmvPayload(null)
+    setNote('')
+    setUpiLink(null)
     setTouched(false)
   }, [])
 
@@ -66,7 +69,7 @@ export default function App() {
         <Header />
 
         <main className="w-full max-w-[480px]">
-          {!emvPayload ? (
+          {!upiLink ? (
             <div className="rounded-2xl bg-card border border-border-subtle p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
               <div className="flex flex-col gap-5" onKeyDown={handleKeyDown}>
                 <InputField
@@ -86,7 +89,7 @@ export default function App() {
 
                 <InputField
                   id="payee-name"
-                  label="Merchant / Payee Name — optional"
+                  label="Payee Name — optional"
                   placeholder="Name or business"
                   type="text"
                   autoComplete="off"
@@ -104,6 +107,16 @@ export default function App() {
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   error={amountError}
+                />
+
+                <InputField
+                  id="note"
+                  label="Note — optional"
+                  placeholder="Payment"
+                  type="text"
+                  autoComplete="off"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
                 />
 
                 <Button
@@ -131,7 +144,7 @@ export default function App() {
                 </div>
               }
             >
-              <QRCard emvPayload={emvPayload} onReset={handleReset} />
+              <QRCard upiLink={upiLink} onReset={handleReset} />
             </Suspense>
           )}
         </main>
