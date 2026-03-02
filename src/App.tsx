@@ -3,7 +3,7 @@ import Header from './components/Header'
 import InputField from './components/InputField'
 import Button from './components/Buttons'
 import { validateUpi, validateAmount } from './utils/validateUpi'
-import { buildUpiLink } from './utils/buildUpi'
+import { buildEmvPayload } from './utils/buildEmv'
 import { Zap } from 'lucide-react'
 
 const QRCard = lazy(() => import('./components/QRCard'))
@@ -12,7 +12,7 @@ export default function App() {
   const [upiId, setUpiId] = useState('')
   const [payeeName, setPayeeName] = useState('')
   const [amount, setAmount] = useState('')
-  const [upiLink, setUpiLink] = useState<string | null>(null)
+  const [emvPayload, setEmvPayload] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [touched, setTouched] = useState(false)
 
@@ -32,8 +32,12 @@ export default function App() {
     if (!canGenerate) return
     setIsGenerating(true)
     setTimeout(() => {
-      const link = buildUpiLink(upiId, amount, payeeName)
-      setUpiLink(link)
+      const payload = buildEmvPayload({
+        vpa: upiId,
+        merchantName: payeeName || undefined,
+        amount: amount || undefined,
+      })
+      setEmvPayload(payload)
       setIsGenerating(false)
     }, 400)
   }, [canGenerate, upiId, amount, payeeName])
@@ -42,7 +46,7 @@ export default function App() {
     setUpiId('')
     setPayeeName('')
     setAmount('')
-    setUpiLink(null)
+    setEmvPayload(null)
     setTouched(false)
   }, [])
 
@@ -54,7 +58,6 @@ export default function App() {
 
   return (
     <div className="relative min-h-dvh flex flex-col">
-      {/* Ambient background glow */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-20%] left-[50%] -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-accent/[0.04] blur-[120px] animate-glow" />
       </div>
@@ -63,7 +66,7 @@ export default function App() {
         <Header />
 
         <main className="w-full max-w-[480px]">
-          {!upiLink ? (
+          {!emvPayload ? (
             <div className="rounded-2xl bg-card border border-border-subtle p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
               <div className="flex flex-col gap-5" onKeyDown={handleKeyDown}>
                 <InputField
@@ -83,7 +86,7 @@ export default function App() {
 
                 <InputField
                   id="payee-name"
-                  label="Payee Name — optional"
+                  label="Merchant / Payee Name — optional"
                   placeholder="Name or business"
                   type="text"
                   autoComplete="off"
@@ -128,7 +131,7 @@ export default function App() {
                 </div>
               }
             >
-              <QRCard upiLink={upiLink} onReset={handleReset} />
+              <QRCard emvPayload={emvPayload} onReset={handleReset} />
             </Suspense>
           )}
         </main>
