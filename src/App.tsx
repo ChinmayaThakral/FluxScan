@@ -6,11 +6,18 @@ import RecentVpas from './components/RecentVpas'
 import AmountPresets from './components/AmountPresets'
 import PaymentLog from './components/PaymentLog'
 import InstallBanner from './components/InstallBanner'
+import ResetModal, { type ResetChoice } from './components/ResetModal'
 import { validateUpi, validateAmount } from './utils/validateUpi'
 import { buildUpiLink } from './utils/buildUpi'
 import { deriveNameFromVpa } from './utils/deriveName'
-import { getRecentVpas, saveRecentVpa, getPaymentLog, addPaymentLog, getTheme, setTheme } from './utils/storage'
-import type { Theme, RecentVpa, PaymentLogEntry } from './utils/storage'
+import {
+  getRecentVpas, saveRecentVpa,
+  getPaymentLog, addPaymentLog, updateLogEntryStatus, mergeLog, replaceLog,
+  getTheme, setTheme,
+  getTotalGenerated, incrementTotalGenerated,
+} from './utils/storage'
+import type { Theme, RecentVpa, PaymentLogEntry, ExportData } from './utils/storage'
+import type { ImportChoice } from './components/ImportModal'
 import { Zap } from 'lucide-react'
 
 const QRCard = lazy(() => import('./components/QRCard'))
@@ -27,12 +34,17 @@ export default function App() {
   const [recentVpas, setRecentVpas] = useState<RecentVpa[]>([])
   const [paymentLog, setPaymentLog] = useState<PaymentLogEntry[]>([])
   const [theme, setThemeState] = useState<Theme>('dark')
+  const [totalGenerated, setTotalGenerated] = useState(0)
+
+  const [showResetModal, setShowResetModal] = useState(false)
+  const [activeLogId, setActiveLogId] = useState<string | null>(null)
 
   const upiInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     setRecentVpas(getRecentVpas())
     setPaymentLog(getPaymentLog())
+    setTotalGenerated(getTotalGenerated())
 
     const saved = getTheme()
     setThemeState(saved)
@@ -48,6 +60,10 @@ export default function App() {
       document.body.classList.toggle('light', next === 'light')
       return next
     })
+  }, [])
+
+  const refreshLog = useCallback(() => {
+    setPaymentLog(getPaymentLog())
   }, [])
 
   const isUpiValid = validateUpi(upiId)
@@ -87,19 +103,52 @@ export default function App() {
         amount: amount || '',
         note: note || 'Payment',
         link,
+        status: 'success',
       })
-      setPaymentLog(getPaymentLog())
+
+      const latest = getPaymentLog()
+      setPaymentLog(latest)
+      setActiveLogId(latest[0]?.id ?? null)
+
+      setTotalGenerated(incrementTotalGenerated())
     }, 400)
   }, [canGenerate, upiId, payeeName, amount, note])
 
-  const handleReset = useCallback(() => {
+  const clearForm = useCallback(() => {
     setUpiId('')
     setPayeeName('')
     setAmount('')
     setNote('')
     setUpiLink(null)
     setTouched(false)
+    setActiveLogId(null)
     setTimeout(() => upiInputRef.current?.focus(), 100)
+  }, [])
+
+  const handleResetClick = useCallback(() => {
+    setShowResetModal(true)
+  }, [])
+
+  const handleResetChoice = useCallback((choice: ResetChoice) => {
+    setShowResetModal(false)
+
+    if (choice === 'success' && activeLogId) {
+      updateLogEntryStatus(activeLogId, 'success')
+      refreshLog()
+    } else if (choice === 'failed' && activeLogId) {
+      updateLogEntryStatus(activeLogId, 'failed')
+      refreshLog()
+    }
+
+    clearForm()
+  }, [activeLogId, refreshLog, clearForm])
+
+  const handleImport = useCallback((data: ExportData, choice: ImportChoice) => {
+    if (choice === 'merge') {
+      setPaymentLog(mergeLog(data.log))
+    } else if (choice === 'replace') {
+      setPaymentLog(replaceLog(data.log))
+    }
   }, [])
 
   const handleSelectRecent = useCallback((vpa: string, name: string) => {
@@ -203,7 +252,7 @@ export default function App() {
                 </div>
               </div>
 
-              <PaymentLog entries={paymentLog} onClear={() => setPaymentLog([])} />
+              <PaymentLog entries={paymentLog} onUpdate={refreshLog} onImport={handleImport} />
             </>
           ) : (
             <Suspense
@@ -213,7 +262,7 @@ export default function App() {
                 </div>
               }
             >
-              <QRCard upiLink={upiLink} onReset={handleReset} />
+              <QRCard upiLink={upiLink} onReset={handleResetClick} />
             </Suspense>
           )}
         </main>
@@ -221,10 +270,19 @@ export default function App() {
 
       <footer className="relative z-10 text-center py-6 mt-auto">
         <p className="text-xs text-text-secondary/60">
-          Offline ready. No data stored externally.
+          Offline Ready
+          <span className="mx-1.5">·</span>
+          Payments Generated: <span className="text-accent font-semibold">{totalGenerated.toLocaleString('en-IN')}</span>
+          <span className="mx-1.5">·</span>
+          v1.2
         </p>
-        <p className="text-[10px] text-text-secondary/30 mt-1">v1.1</p>
       </footer>
+
+      <ResetModal
+        open={showResetModal}
+        onClose={() => setShowResetModal(false)}
+        onChoice={handleResetChoice}
+      />
     </div>
   )
 }
