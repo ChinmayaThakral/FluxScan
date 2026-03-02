@@ -1,9 +1,16 @@
-import { useState, useCallback, lazy, Suspense } from 'react'
+import { useState, useCallback, useEffect, useRef, lazy, Suspense } from 'react'
 import Header from './components/Header'
 import InputField from './components/InputField'
 import Button from './components/Buttons'
+import RecentVpas from './components/RecentVpas'
+import AmountPresets from './components/AmountPresets'
+import PaymentLog from './components/PaymentLog'
+import InstallBanner from './components/InstallBanner'
 import { validateUpi, validateAmount } from './utils/validateUpi'
 import { buildUpiLink } from './utils/buildUpi'
+import { deriveNameFromVpa } from './utils/deriveName'
+import { getRecentVpas, saveRecentVpa, getPaymentLog, addPaymentLog, getTheme, setTheme } from './utils/storage'
+import type { Theme, RecentVpa, PaymentLogEntry } from './utils/storage'
 import { Zap } from 'lucide-react'
 
 const QRCard = lazy(() => import('./components/QRCard'))
@@ -16,6 +23,32 @@ export default function App() {
   const [upiLink, setUpiLink] = useState<string | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [touched, setTouched] = useState(false)
+
+  const [recentVpas, setRecentVpas] = useState<RecentVpa[]>([])
+  const [paymentLog, setPaymentLog] = useState<PaymentLogEntry[]>([])
+  const [theme, setThemeState] = useState<Theme>('dark')
+
+  const upiInputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    setRecentVpas(getRecentVpas())
+    setPaymentLog(getPaymentLog())
+
+    const saved = getTheme()
+    setThemeState(saved)
+    document.body.classList.toggle('light', saved === 'light')
+
+    setTimeout(() => upiInputRef.current?.focus(), 100)
+  }, [])
+
+  const toggleTheme = useCallback(() => {
+    setThemeState((prev) => {
+      const next: Theme = prev === 'dark' ? 'light' : 'dark'
+      setTheme(next)
+      document.body.classList.toggle('light', next === 'light')
+      return next
+    })
+  }, [])
 
   const isUpiValid = validateUpi(upiId)
   const isAmountValid = validateAmount(amount)
@@ -32,15 +65,30 @@ export default function App() {
   const handleGenerate = useCallback(() => {
     if (!canGenerate) return
     setIsGenerating(true)
+
+    const resolvedName = payeeName || deriveNameFromVpa(upiId)
+
     setTimeout(() => {
       const link = buildUpiLink({
         vpa: upiId,
-        payeeName: payeeName || undefined,
+        payeeName: resolvedName || undefined,
         amount: amount || undefined,
         note: note || undefined,
       })
       setUpiLink(link)
       setIsGenerating(false)
+
+      saveRecentVpa(upiId, resolvedName)
+      setRecentVpas(getRecentVpas())
+
+      addPaymentLog({
+        vpa: upiId,
+        name: resolvedName,
+        amount: amount || '',
+        note: note || 'Payment',
+        link,
+      })
+      setPaymentLog(getPaymentLog())
     }, 400)
   }, [canGenerate, upiId, payeeName, amount, note])
 
@@ -51,6 +99,13 @@ export default function App() {
     setNote('')
     setUpiLink(null)
     setTouched(false)
+    setTimeout(() => upiInputRef.current?.focus(), 100)
+  }, [])
+
+  const handleSelectRecent = useCallback((vpa: string, name: string) => {
+    setUpiId(vpa)
+    setPayeeName(name)
+    setTouched(true)
   }, [])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -66,76 +121,90 @@ export default function App() {
       </div>
 
       <div className="relative z-10 flex-1 flex flex-col items-center px-4">
-        <Header />
+        <Header theme={theme} onToggleTheme={toggleTheme} />
+
+        <InstallBanner />
 
         <main className="w-full max-w-[480px]">
           {!upiLink ? (
-            <div className="rounded-2xl bg-card border border-border-subtle p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
-              <div className="flex flex-col gap-5" onKeyDown={handleKeyDown}>
-                <InputField
-                  id="upi-id"
-                  label="UPI ID (VPA)"
-                  placeholder="yourname@upi"
-                  type="text"
-                  autoComplete="off"
-                  spellCheck={false}
-                  value={upiId}
-                  onChange={(e) => {
-                    setUpiId(e.target.value)
-                    if (!touched) setTouched(true)
-                  }}
-                  error={upiError}
-                />
+            <>
+              <div className="rounded-2xl bg-card border border-border-subtle p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+                <div className="flex flex-col gap-5" onKeyDown={handleKeyDown}>
+                  <div className="flex flex-col gap-3">
+                    <InputField
+                      id="upi-id"
+                      label="UPI ID (VPA)"
+                      placeholder="yourname@upi"
+                      type="text"
+                      autoComplete="off"
+                      spellCheck={false}
+                      autoFocus
+                      ref={upiInputRef}
+                      value={upiId}
+                      onChange={(e) => {
+                        setUpiId(e.target.value)
+                        if (!touched) setTouched(true)
+                      }}
+                      error={upiError}
+                    />
+                    <RecentVpas items={recentVpas} onSelect={handleSelectRecent} />
+                  </div>
 
-                <InputField
-                  id="payee-name"
-                  label="Payee Name — optional"
-                  placeholder="Name or business"
-                  type="text"
-                  autoComplete="off"
-                  value={payeeName}
-                  onChange={(e) => setPayeeName(e.target.value)}
-                />
+                  <InputField
+                    id="payee-name"
+                    label="Payee Name — optional"
+                    placeholder={upiId ? deriveNameFromVpa(upiId) || 'Auto-derived from VPA' : 'Name or business'}
+                    type="text"
+                    autoComplete="off"
+                    value={payeeName}
+                    onChange={(e) => setPayeeName(e.target.value)}
+                  />
 
-                <InputField
-                  id="amount"
-                  label="Amount (INR) — optional"
-                  placeholder="0.00"
-                  type="text"
-                  inputMode="decimal"
-                  autoComplete="off"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  error={amountError}
-                />
+                  <div className="flex flex-col gap-2">
+                    <InputField
+                      id="amount"
+                      label="Amount (INR) — optional"
+                      placeholder="0.00"
+                      type="text"
+                      inputMode="decimal"
+                      autoComplete="off"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      error={amountError}
+                    />
+                    <AmountPresets onSelect={setAmount} current={amount} />
+                  </div>
 
-                <InputField
-                  id="note"
-                  label="Note — optional"
-                  placeholder="Payment"
-                  type="text"
-                  autoComplete="off"
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                />
+                  <InputField
+                    id="note"
+                    label="Note — optional"
+                    placeholder="Payment"
+                    type="text"
+                    autoComplete="off"
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                  />
 
-                <Button
-                  variant="primary"
-                  disabled={!canGenerate}
-                  onClick={handleGenerate}
-                  icon={
-                    isGenerating ? (
-                      <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <Zap className="w-4 h-4" />
-                    )
-                  }
-                  className={`w-full mt-1 ${canGenerate ? 'animate-pulse-subtle' : ''}`}
-                >
-                  {isGenerating ? 'Generating...' : 'Generate QR'}
-                </Button>
+                  <Button
+                    variant="primary"
+                    disabled={!canGenerate}
+                    onClick={handleGenerate}
+                    icon={
+                      isGenerating ? (
+                        <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <Zap className="w-4 h-4" />
+                      )
+                    }
+                    className={`w-full mt-1 ${canGenerate ? 'animate-pulse-subtle' : ''}`}
+                  >
+                    {isGenerating ? 'Generating...' : 'Generate QR'}
+                  </Button>
+                </div>
               </div>
-            </div>
+
+              <PaymentLog entries={paymentLog} onClear={() => setPaymentLog([])} />
+            </>
           ) : (
             <Suspense
               fallback={
@@ -152,9 +221,9 @@ export default function App() {
 
       <footer className="relative z-10 text-center py-6 mt-auto">
         <p className="text-xs text-text-secondary/60">
-          Offline ready. No data stored.
+          Offline ready. No data stored externally.
         </p>
-        <p className="text-[10px] text-text-secondary/30 mt-1">v1.0</p>
+        <p className="text-[10px] text-text-secondary/30 mt-1">v1.1</p>
       </footer>
     </div>
   )
