@@ -46,7 +46,7 @@ export default function InstallBanner() {
         </p>
         <button
           onClick={() => setDismissed(true)}
-          className="p-1 rounded-md hover:bg-white/5 transition-colors cursor-pointer"
+          className="p-1 rounded-md hover:bg-hover-bg transition-colors cursor-pointer"
         >
           <X className="w-3.5 h-3.5 text-text-secondary/50" />
         </button>

@@ -22,7 +22,7 @@ export default function Header({ theme, onToggleTheme }: HeaderProps) {
       </div>
       <button
         onClick={onToggleTheme}
-        className="mt-1 p-3 rounded-xl hover:bg-white/[0.05] transition-colors duration-200 cursor-pointer"
+        className="mt-1 p-3 rounded-xl hover:bg-hover-bg transition-colors duration-200 cursor-pointer"
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
       >
         {theme === 'dark'

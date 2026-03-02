@@ -8,6 +8,16 @@ interface QRCardProps {
   onReset: () => void
 }
 
+function getThemeColors() {
+  const light = document.body.classList.contains('light')
+  return {
+    qrDark: light ? '#111118' : '#E8E8EC',
+    qrLight: light ? '#FFFFFF' : '#13141A',
+    canvasBg: light ? '#FFFFFF' : '#13141A',
+    brandText: light ? '#6B7280' : '#71717A',
+  }
+}
+
 export default function QRCard({ upiLink, onReset }: QRCardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const fullscreenCanvasRef = useRef<HTMLCanvasElement>(null)
@@ -21,10 +31,11 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
   }, [])
 
   const renderQR = useCallback((canvas: HTMLCanvasElement, size: number) => {
+    const c = getThemeColors()
     QRCode.toCanvas(canvas, upiLink, {
       width: size,
       margin: 3,
-      color: { dark: '#E8E8EC', light: '#111219' },
+      color: { dark: c.qrDark, light: c.qrLight },
       errorCorrectionLevel: 'H',
     })
   }, [upiLink])
@@ -54,6 +65,7 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
   function buildDownloadCanvas(): HTMLCanvasElement | null {
     if (!canvasRef.current) return null
     const c = document.createElement('canvas')
+    const colors = getThemeColors()
     const pad = 40
     const bh = branded ? 40 : 0
     const w = canvasRef.current.width + pad * 2
@@ -62,11 +74,11 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
     c.height = h
     const ctx = c.getContext('2d')
     if (!ctx) return null
-    ctx.fillStyle = '#111219'
+    ctx.fillStyle = colors.canvasBg
     ctx.fillRect(0, 0, w, h)
     ctx.drawImage(canvasRef.current, pad, pad)
     if (branded) {
-      ctx.fillStyle = '#71717A'
+      ctx.fillStyle = colors.brandText
       ctx.font = '12px Inter, sans-serif'
       ctx.textAlign = 'center'
       ctx.fillText('FluxScan', w / 2, h - 14)
@@ -97,8 +109,8 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
   return (
     <>
       <div className="animate-scale-in flex flex-col items-center">
-        {/* Glassmorphic hero card */}
-        <div className="w-full bg-white/[0.04] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-8 flex flex-col items-center gap-7">
+        {/* Hero card */}
+        <div className="w-full bg-surface border border-border-subtle rounded-2xl p-8 flex flex-col items-center gap-7">
 
           <p className="text-xs uppercase tracking-widest text-text-secondary/40 font-medium">
             Scan with any UPI app
@@ -109,8 +121,8 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
             onClick={() => setFullscreen(true)}
           >
             <canvas ref={canvasRef} className="block" />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/20 transition-opacity">
-              <Maximize2 className="w-5 h-5 text-white/80" />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-overlay/30 transition-opacity">
+              <Maximize2 className="w-5 h-5 text-text-primary/80" />
             </div>
           </div>
 
@@ -137,19 +149,15 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
             )}
           </div>
 
-          {/* Branding toggle + link — quiet */}
-          <div className="w-full flex items-center justify-between">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" checked={branded} onChange={(e) => setBranded(e.target.checked)} className="sr-only peer" />
-              <div className="w-8 h-[18px] rounded-full bg-white/[0.06] peer-checked:bg-accent/25 relative transition-colors">
-                <div className={`absolute top-[3px] w-3 h-3 rounded-full transition-all ${branded ? 'left-[14px] bg-accent' : 'left-[3px] bg-white/20'}`} />
-              </div>
-              <span className="text-xs text-text-secondary/30">Branding</span>
-            </label>
-          </div>
+          <label className="flex items-center gap-2 cursor-pointer self-start">
+            <input type="checkbox" checked={branded} onChange={(e) => setBranded(e.target.checked)} className="sr-only peer" />
+            <div className="w-8 h-[18px] rounded-full bg-surface-hover peer-checked:bg-accent/25 relative transition-colors">
+              <div className={`absolute top-[3px] w-3 h-3 rounded-full transition-all ${branded ? 'left-[14px] bg-accent' : 'left-[3px] bg-text-secondary/30'}`} />
+            </div>
+            <span className="text-xs text-text-secondary/30">Branding</span>
+          </label>
         </div>
 
-        {/* Generated link — outside card, minimal */}
         <details className="w-full mt-5">
           <summary className="text-xs text-text-secondary/25 cursor-pointer hover:text-text-secondary/40 transition-colors pl-1">
             Show generated link
@@ -157,7 +165,6 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
           <p className="text-xs text-text-secondary/30 break-all font-mono leading-relaxed select-all mt-2 pl-1">{upiLink}</p>
         </details>
 
-        {/* Reset */}
         <div className="w-full mt-8">
           <Button variant="ghost" icon={<RotateCcw className="w-4 h-4" />} onClick={onReset} className="w-full">
             Reset
@@ -167,14 +174,14 @@ export default function QRCard({ upiLink, onReset }: QRCardProps) {
 
       {fullscreen && (
         <div
-          className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center p-8 animate-fade-in-up"
+          className="fixed inset-0 z-50 bg-overlay flex flex-col items-center justify-center p-8 animate-fade-in-up"
           onClick={() => setFullscreen(false)}
         >
-          <button className="absolute top-6 right-6 p-3 rounded-xl bg-white/10 hover:bg-white/15 transition-colors cursor-pointer">
-            <X className="w-5 h-5 text-white" />
+          <button className="absolute top-6 right-6 p-3 rounded-xl bg-surface-hover transition-colors cursor-pointer">
+            <X className="w-5 h-5 text-text-primary" />
           </button>
           <canvas ref={fullscreenCanvasRef} className="block rounded-xl" />
-          <p className="mt-5 text-sm text-white/25">Tap to close</p>
+          <p className="mt-5 text-sm text-text-secondary/40">Tap to close</p>
         </div>
       )}
     </>

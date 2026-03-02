@@ -164,16 +164,16 @@ export default function App() {
   }, [refreshLog, refreshCounter])
 
   return (
-    <div className="min-h-dvh flex flex-col">
-      <div className="relative z-10 flex-1 flex flex-col px-6 max-w-lg mx-auto w-full" onKeyDown={handleKeyDown}>
+    <div className="min-h-screen w-full flex justify-center">
+      <div className="w-full max-w-[560px] px-6 flex flex-col min-h-screen" onKeyDown={handleKeyDown}>
+
         <Header theme={theme} onToggleTheme={toggleTheme} />
 
         <InstallBanner />
 
         {!upiLink ? (
-          <main className="flex-1 flex flex-col gap-10 pb-8">
+          <main className="flex-1 flex flex-col gap-10 pb-24">
 
-            {/* VPA */}
             <section className="animate-fade-in-up">
               <InputField
                 id="upi-id"
@@ -193,7 +193,6 @@ export default function App() {
               />
             </section>
 
-            {/* Amount */}
             <section className="space-y-4 animate-fade-in-up" style={{ animationDelay: '50ms' }}>
               <InputField
                 id="amount"
@@ -210,12 +209,10 @@ export default function App() {
               <AmountPresets onSelect={setAmount} current={amount} />
             </section>
 
-            {/* Recent */}
             <section className="animate-fade-in-up" style={{ animationDelay: '100ms' }}>
               <RecentVpas items={recentVpas} onSelect={handleSelectRecent} />
             </section>
 
-            {/* Payee + Note */}
             <section className="space-y-6 animate-fade-in-up" style={{ animationDelay: '150ms' }}>
               <InputField
                 id="payee-name"
@@ -237,7 +234,6 @@ export default function App() {
               />
             </section>
 
-            {/* Generate */}
             <section className="animate-fade-in-up" style={{ animationDelay: '200ms' }}>
               <Button
                 variant="primary"
@@ -256,9 +252,8 @@ export default function App() {
               </Button>
             </section>
 
-            {/* History */}
             {paymentLog.length > 0 && (
-              <section className="pt-4 border-t border-white/[0.04]">
+              <section className="pt-4 border-t border-border-subtle">
                 <PaymentLog
                   entries={paymentLog}
                   onUpdate={handleLogUpdate}
@@ -268,7 +263,7 @@ export default function App() {
             )}
           </main>
         ) : (
-          <main className="flex-1 flex flex-col pb-8">
+          <main className="flex-1 flex flex-col pb-24">
             <Suspense
               fallback={
                 <div className="flex-1 flex items-center justify-center">
@@ -280,30 +275,30 @@ export default function App() {
             </Suspense>
           </main>
         )}
-      </div>
 
-      {/* Footer */}
-      <footer className="relative z-10 text-center py-8 px-6">
-        <p className="text-xs text-text-secondary/25">
-          Offline Ready · Payments Generated: <span className="text-accent/60">{totalGenerated}</span> · v2.0
-        </p>
-        <p className="text-[11px] text-text-secondary/15 flex items-center justify-center gap-4 mt-2.5">
-          <button
-            onClick={() => setShowSupportModal(true)}
-            className="hover:text-accent/50 transition-colors cursor-pointer inline-flex items-center gap-1.5"
-          >
-            <Heart className="w-3 h-3" /> Support
-          </button>
-          <a
-            href={REFERRAL_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-accent/50 transition-colors inline-flex items-center gap-1.5"
-          >
-            <ExternalLink className="w-3 h-3" /> P2P Merchant
-          </a>
-        </p>
-      </footer>
+        {/* Footer */}
+        <footer className="text-center py-8">
+          <p className="text-xs text-text-secondary/25">
+            Offline Ready · Payments Generated: <span className="text-accent/60">{totalGenerated}</span> · v2.0
+          </p>
+          <p className="text-[11px] text-text-secondary/15 flex items-center justify-center gap-4 mt-2.5">
+            <button
+              onClick={() => setShowSupportModal(true)}
+              className="hover:text-accent/50 transition-colors cursor-pointer inline-flex items-center gap-1.5"
+            >
+              <Heart className="w-3 h-3" /> Support
+            </button>
+            <a
+              href={REFERRAL_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-accent/50 transition-colors inline-flex items-center gap-1.5"
+            >
+              <ExternalLink className="w-3 h-3" /> P2P Merchant
+            </a>
+          </p>
+        </footer>
+      </div>
 
       <ResetModal open={showResetModal} onClose={() => setShowResetModal(false)} onChoice={handleResetChoice} />
       <SupportModal open={showSupportModal} onClose={() => setShowSupportModal(false)} />

@@ -85,7 +85,7 @@ export default function PaymentLog({ entries, onUpdate, onImport }: PaymentLogPr
       <div>
         <button
           onClick={() => setExpanded(!expanded)}
-          className="flex items-center justify-between w-full py-2 cursor-pointer group"
+          className="flex items-center justify-between w-full py-2 cursor-pointer"
         >
           <p className="text-xs uppercase tracking-widest text-text-secondary/30 font-medium flex items-center gap-2">
             History
@@ -110,7 +110,7 @@ export default function PaymentLog({ entries, onUpdate, onImport }: PaymentLogPr
             {entries.map((entry) => (
               <div
                 key={entry.id}
-                className={`flex items-center gap-3 px-3 py-3.5 rounded-xl hover:bg-white/[0.03] transition-all duration-200 ${
+                className={`flex items-center gap-3 px-3 py-3.5 rounded-xl hover:bg-hover-bg transition-all duration-200 ${
                   deletingId === entry.id ? 'opacity-0 scale-95 max-h-0 py-0 overflow-hidden' : ''
                 }`}
               >
@@ -125,13 +125,13 @@ export default function PaymentLog({ entries, onUpdate, onImport }: PaymentLogPr
                 </div>
 
                 <div className="flex items-center gap-0.5 flex-shrink-0">
-                  <button onClick={() => handleCopy(entry)} className="p-2 rounded-lg hover:bg-white/[0.05] transition-colors cursor-pointer">
+                  <button onClick={() => handleCopy(entry)} className="p-2 rounded-lg hover:bg-hover-bg transition-colors cursor-pointer">
                     {copiedId === entry.id
                       ? <Check className="w-3.5 h-3.5 text-success/70" />
                       : <Copy className="w-3.5 h-3.5 text-text-secondary/20" />
                     }
                   </button>
-                  <button onClick={() => handleDelete(entry.id)} className="p-2 rounded-lg hover:bg-white/[0.05] transition-colors cursor-pointer group/del">
+                  <button onClick={() => handleDelete(entry.id)} className="p-2 rounded-lg hover:bg-hover-bg transition-colors cursor-pointer group/del">
                     <Trash2 className="w-3.5 h-3.5 text-text-secondary/15 group-hover/del:text-danger/60" />
                   </button>
                 </div>

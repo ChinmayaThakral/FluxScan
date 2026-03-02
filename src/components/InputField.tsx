@@ -17,13 +17,13 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
           ref={ref}
           className={`
             w-full px-5 h-[58px] rounded-xl
-            bg-transparent text-text-primary text-lg
-            border border-white/[0.08]
+            bg-input-bg text-text-primary text-lg
+            border border-input-border
             transition-all duration-200 ease-out
             placeholder:text-text-secondary/25
-            focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/[0.08]
-            hover:border-white/[0.12]
-            ${error ? '!border-danger/50 !ring-danger/[0.08]' : ''}
+            focus:outline-none focus:border-input-border-focus focus:ring-4 focus:ring-input-ring
+            hover:border-input-border-hover
+            ${error ? '!border-danger/50 !ring-danger/10' : ''}
             ${className}
           `}
           {...props}

@@ -16,7 +16,7 @@ export default function AmountPresets({ onSelect, current }: AmountPresetsProps)
             flex-1 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer
             ${amt === current
               ? 'bg-accent/15 text-accent'
-              : 'text-text-secondary/50 hover:text-text-secondary hover:bg-white/[0.04]'
+              : 'text-text-secondary/50 hover:text-text-secondary hover:bg-hover-bg'
             }
           `}
         >

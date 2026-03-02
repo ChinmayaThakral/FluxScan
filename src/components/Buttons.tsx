@@ -20,9 +20,9 @@ export default function Button({
     primary:
       'bg-accent text-white hover:brightness-110 active:scale-[0.98] shadow-lg shadow-accent/20 disabled:hover:brightness-100',
     secondary:
-      'bg-white/[0.05] text-text-primary border border-white/[0.06] hover:bg-white/[0.08] active:scale-[0.98]',
+      'bg-surface-hover text-text-primary border border-border-subtle hover:bg-surface-hover/80 active:scale-[0.98]',
     ghost:
-      'text-text-secondary/60 hover:text-text-primary hover:bg-white/[0.04] active:scale-[0.98]',
+      'text-text-secondary/60 hover:text-text-primary hover:bg-hover-bg active:scale-[0.98]',
   }
 
   return (

@@ -29,8 +29,8 @@ export default function Modal({ open, onClose, children }: ModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center p-6 animate-fade-in-up"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
-      <div className="relative w-full max-w-[340px] bg-[#16161E] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-7 shadow-2xl">
+      <div className="absolute inset-0 bg-overlay backdrop-blur-sm" />
+      <div className="relative w-full max-w-[340px] bg-surface border border-border-subtle rounded-2xl p-7 shadow-2xl">
         {children}
       </div>
     </div>

@@ -17,10 +17,14 @@ export default function SupportModal({ open, onClose }: SupportModalProps) {
 
   useEffect(() => {
     if (open && canvasRef.current) {
+      const isDark = !document.body.classList.contains('light')
       QRCode.toCanvas(canvasRef.current, EVM_ADDRESS, {
         width: 140,
         margin: 2,
-        color: { dark: '#E8E8EC', light: '#16161E' },
+        color: {
+          dark: isDark ? '#E8E8EC' : '#111118',
+          light: isDark ? '#13141A' : '#FFFFFF',
+        },
         errorCorrectionLevel: 'M',
       })
     }
@@ -42,7 +46,7 @@ export default function SupportModal({ open, onClose }: SupportModalProps) {
       </p>
 
       <div className="flex flex-col items-center gap-4">
-        <div className="rounded-lg overflow-hidden">
+        <div className="rounded-lg overflow-hidden border border-border-subtle">
           <canvas ref={canvasRef} className="block" />
         </div>
 
@@ -53,7 +57,7 @@ export default function SupportModal({ open, onClose }: SupportModalProps) {
 
         <button
           onClick={handleCopy}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium text-accent bg-accent/[0.08] hover:bg-accent/[0.12] transition-colors cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium text-accent bg-accent/[0.08] hover:bg-accent/[0.14] transition-colors cursor-pointer"
         >
           {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
           {copied ? 'Copied' : 'Copy Address'}

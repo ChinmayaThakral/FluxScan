@@ -22,21 +22,21 @@ export default function ResetModal({ open, onClose, onChoice }: ResetModalProps)
       <div className="flex flex-col gap-2.5">
         <button
           onClick={() => onChoice('success')}
-          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-success bg-success/[0.08] hover:bg-success/[0.12] transition-colors cursor-pointer"
+          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-success bg-success/[0.08] hover:bg-success/[0.14] transition-colors cursor-pointer"
         >
           <CheckCircle className="w-4 h-4" />
           Done
         </button>
         <button
           onClick={() => onChoice('failed')}
-          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-danger bg-danger/[0.08] hover:bg-danger/[0.12] transition-colors cursor-pointer"
+          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-danger bg-danger/[0.08] hover:bg-danger/[0.14] transition-colors cursor-pointer"
         >
           <XCircle className="w-4 h-4" />
           Cancelled
         </button>
         <button
           onClick={() => onChoice('skip')}
-          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm text-text-secondary/35 hover:text-text-secondary/60 hover:bg-white/[0.03] transition-colors cursor-pointer"
+          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm text-text-secondary/35 hover:text-text-secondary/60 hover:bg-hover-bg transition-colors cursor-pointer"
         >
           <RotateCcw className="w-4 h-4" />
           Just reset

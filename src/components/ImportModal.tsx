@@ -23,21 +23,21 @@ export default function ImportModal({ open, count, onClose, onChoice }: ImportMo
       <div className="flex flex-col gap-2.5">
         <button
           onClick={() => onChoice('merge')}
-          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-accent bg-accent/[0.08] hover:bg-accent/[0.12] transition-colors cursor-pointer"
+          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-accent bg-accent/[0.08] hover:bg-accent/[0.14] transition-colors cursor-pointer"
         >
           <Layers className="w-4 h-4" />
           Merge
         </button>
         <button
           onClick={() => onChoice('replace')}
-          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-danger bg-danger/[0.08] hover:bg-danger/[0.12] transition-colors cursor-pointer"
+          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm font-medium text-danger bg-danger/[0.08] hover:bg-danger/[0.14] transition-colors cursor-pointer"
         >
           <Replace className="w-4 h-4" />
           Replace
         </button>
         <button
           onClick={() => onChoice('cancel')}
-          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm text-text-secondary/35 hover:text-text-secondary/60 hover:bg-white/[0.03] transition-colors cursor-pointer"
+          className="flex items-center gap-3 w-full px-4 py-3.5 rounded-xl text-sm text-text-secondary/35 hover:text-text-secondary/60 hover:bg-hover-bg transition-colors cursor-pointer"
         >
           <X className="w-4 h-4" />
           Cancel
