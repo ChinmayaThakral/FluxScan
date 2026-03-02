@@ -164,8 +164,8 @@ export default function App() {
   }, [refreshLog, refreshCounter])
 
   return (
-    <div className="min-h-screen w-full flex justify-center">
-      <div className="w-full max-w-[560px] px-6 flex flex-col min-h-screen" onKeyDown={handleKeyDown}>
+    <div className="min-h-screen w-full flex justify-center pt-safe pb-safe">
+      <div className="w-full max-w-[560px] px-6 sm:px-8 flex flex-col min-h-screen" onKeyDown={handleKeyDown}>
 
         <Header theme={theme} onToggleTheme={toggleTheme} />
 
