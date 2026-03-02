@@ -8,15 +8,15 @@ interface HeaderProps {
 
 export default function Header({ theme, onToggleTheme }: HeaderProps) {
   return (
-      <header className="w-full flex items-start justify-between pt-14 pb-24">
-      <div>
-        <h1 className="text-4xl font-semibold tracking-tight text-text-primary mb-2">
+      <header className="w-full flex items-start justify-between pt-14 pb-10">
+      <div className="space-y-3">
+        <h1 className="text-4xl font-semibold tracking-tight text-text-primary">
           Flux<span className="text-accent">Scan</span>
         </h1>
-        <p className="text-base text-text-secondary">
+        <p className="text-base text-text-secondary/70">
           generate. scan. done.
         </p>
-        <p className="text-xs text-text-secondary/60 mt-1.5 tracking-wide">
+        <p className="text-sm text-text-secondary/50 tracking-wide">
           Built by merchants. For merchants.
         </p>
       </div>

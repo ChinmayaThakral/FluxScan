@@ -174,7 +174,7 @@ export default function App() {
         {!upiLink ? (
           <main className="flex-1 flex flex-col gap-10 pb-24">
 
-            <section className="animate-fade-in-up">
+            <section className="mt-10 animate-fade-in-up">
               <InputField
                 id="upi-id"
                 label="UPI ID"
