@@ -8,26 +8,26 @@ interface HeaderProps {
 
 export default function Header({ theme, onToggleTheme }: HeaderProps) {
   return (
-    <header className="w-full max-w-[480px] flex items-center justify-between pt-10 pb-6 px-1">
+    <header className="w-full flex items-start justify-between pt-14 pb-10">
       <div>
-        <div className="flex items-center gap-2 mb-0.5">
-          <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-text-primary">
-            Flux<span className="text-accent">Scan</span>
-          </h1>
-          <span className="w-2 h-2 rounded-full bg-accent inline-block mt-1 animate-pulse-subtle" />
-        </div>
-        <p className="text-sm tracking-wide text-text-secondary">
+        <h1 className="text-4xl font-semibold tracking-tight text-text-primary mb-2">
+          Flux<span className="text-accent">Scan</span>
+        </h1>
+        <p className="text-base text-text-secondary/70">
           generate. scan. done.
+        </p>
+        <p className="text-xs text-text-secondary/30 mt-1.5 tracking-wide">
+          Built by merchants. For merchants.
         </p>
       </div>
       <button
         onClick={onToggleTheme}
-        className="p-2.5 rounded-xl bg-card border border-border-subtle hover:border-accent/30 transition-all duration-200 cursor-pointer"
+        className="mt-1 p-3 rounded-xl hover:bg-white/[0.05] transition-colors duration-200 cursor-pointer"
         title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
       >
         {theme === 'dark'
-          ? <Sun className="w-4 h-4 text-text-secondary" />
-          : <Moon className="w-4 h-4 text-text-secondary" />
+          ? <Sun className="w-[18px] h-[18px] text-text-secondary/50" />
+          : <Moon className="w-[18px] h-[18px] text-text-secondary/50" />
         }
       </button>
     </header>

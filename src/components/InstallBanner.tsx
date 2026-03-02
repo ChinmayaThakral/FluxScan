@@ -35,8 +35,8 @@ export default function InstallBanner() {
   }
 
   return (
-    <div className="w-full max-w-[480px] mb-4 animate-fade-in-up">
-      <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-accent/10 border border-accent/20">
+    <div className="w-full mb-6 animate-fade-in-up">
+      <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-accent/[0.06] border border-accent/[0.1]">
         <Download className="w-4 h-4 text-accent flex-shrink-0" />
         <p className="text-xs text-text-secondary flex-1">
           <button onClick={handleInstall} className="text-accent font-medium hover:underline cursor-pointer">

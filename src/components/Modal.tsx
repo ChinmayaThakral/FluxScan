@@ -14,7 +14,11 @@ export default function Modal({ open, onClose, children }: ModalProps) {
   useEffect(() => {
     if (open) {
       document.addEventListener('keydown', handleKey)
-      return () => document.removeEventListener('keydown', handleKey)
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.removeEventListener('keydown', handleKey)
+        document.body.style.overflow = ''
+      }
     }
   }, [open, handleKey])
 
@@ -22,11 +26,11 @@ export default function Modal({ open, onClose, children }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in-up"
+      className="fixed inset-0 z-50 flex items-center justify-center p-6 animate-fade-in-up"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-      <div className="relative w-full max-w-sm rounded-2xl bg-card border border-border-subtle p-6 shadow-2xl">
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <div className="relative w-full max-w-[340px] bg-[#16161E] backdrop-blur-xl border border-white/[0.08] rounded-2xl p-7 shadow-2xl">
         {children}
       </div>
     </div>

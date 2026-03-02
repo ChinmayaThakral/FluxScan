@@ -105,6 +105,7 @@ export function deleteLogEntry(id: string): void {
 
 export function clearPaymentLog(): void {
   writeJSON(PAYMENT_LOG_KEY, [])
+  writeJSON(COUNTER_KEY, 0)
 }
 
 export function setPaymentLog(log: PaymentLogEntry[]): void {
@@ -115,7 +116,7 @@ export function setPaymentLog(log: PaymentLogEntry[]): void {
 
 export function exportLog(): ExportData {
   return {
-    version: '1.2',
+    version: '1.3',
     exportedAt: Date.now(),
     totalGenerated: getTotalGenerated(),
     log: getPaymentLog(),
