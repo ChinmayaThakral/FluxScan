@@ -281,22 +281,22 @@ export default function App() {
           <p className="text-xs text-text-secondary/25">
             Offline Ready · Payments Generated: <span className="text-accent/60">{totalGenerated}</span> · v2.0
           </p>
-          <p className="text-[11px] text-text-secondary/15 flex items-center justify-center gap-4 mt-2.5">
+          <div className="flex items-center justify-center gap-3 mt-4">
             <button
               onClick={() => setShowSupportModal(true)}
-              className="hover:text-accent/50 transition-colors cursor-pointer inline-flex items-center gap-1.5"
+              className="px-4 py-2 rounded-lg text-sm text-text-secondary/50 hover:text-accent hover:bg-hover-bg transition-all cursor-pointer inline-flex items-center gap-2"
             >
-              <Heart className="w-3 h-3" /> Support
+              <Heart className="w-4 h-4" /> Support
             </button>
             <a
               href={REFERRAL_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-accent/50 transition-colors inline-flex items-center gap-1.5"
+              className="px-4 py-2 rounded-lg text-sm text-text-secondary/50 hover:text-accent hover:bg-hover-bg transition-all inline-flex items-center gap-2"
             >
-              <ExternalLink className="w-3 h-3" /> P2P Merchant
+              <ExternalLink className="w-4 h-4" /> P2P Merchant
             </a>
-          </p>
+          </div>
         </footer>
       </div>
 
